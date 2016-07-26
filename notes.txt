@@ -1,0 +1,80 @@
+try5
+
+implement control over expansion parameters (amount, phase, numWaves)
+	Array of HashMaps<String, Float>? 
+
+can now save frames:
+	glitch: saved png shows previous MultiForms as well, some pixelation
+	perhaps not flushing the PShapes? interesting effect 
+
+set colors in configColor(), called at start and at each expansion
+
+Control over stroke and fill w/ PShape implementaion in Form class.
+	done with method chaining, HYPE style
+	might result in performance problems during animation, may need to figure it out
+
+looks like thai dye without stroke but with varying fill
+
+UI: 
+	control color dynamically
+	control expansion parameters
+	control animation(?)
+
+press q to quit
+press . to reverse last expansion
+press s to save frame
+-------------------------------------------------------------------------------
+try4
+
+MultiForm implemented to display multiple Forms simultaneously. 
+
+P2D renderer w/ smooth(4) gets rid of aliasing, looks good.
+
+**adding an "amount" parameter to expansion would be convenient for both
+  animation and interpolation b/w expModes, it seems. 
+
+things to try:
+	can actually pull some decent images now.
+
+	varying fills and strokes of forms. (inside MultiForm)
+
+	having varying amounts of different expansion vectors - interpolating
+	between different ones instead of switching suddenly.  
+
+	animating expansion
+
+-----------------------------------------------------------------------------
+try3
+
+Modes of expansion now selectable with numpad,
+names stored in expModes.txt. If new modes added,
+add name to the file.
+
+Expansion and computation of expansion vector seperated,
+new expansions can be introduced by adding new methods for 
+calculating exp vector.
+
+introduced MultiForm, to display expanded and non- forms 
+together without cheap background trick. to be filled
+
+Expand with Enter, reset with space.
+
+altering parameters of expansion vectors?????
+
+------------------------------------------------------------------------------
+try2
+
+Basic expansion of a Form. Have to go into class to alter mode of expansion.
+Modes so far involve random, noise, and sin, or combinations of these.
+Storing all expansion vectors in an ArrayList for future use  
+
+------------------------------------------------------------------------------
+try1
+
+Wrote the Form class:
+	basic addition of points and display modes
+		*thinking about displaying points as a PShape to alter 
+		 stroke and fill independently from the rest of sketch
+	ability to arrange points in a circle
+
+

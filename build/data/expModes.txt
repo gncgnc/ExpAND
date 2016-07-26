@@ -1,0 +1,7 @@
+
+random
+randomGaussian
+noise
+sin
+sin+noise
+sin*noise
