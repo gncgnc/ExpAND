@@ -1,3 +1,18 @@
+try6
+
+completed first implementation of UI (basic)
+	crude color control
+		start values, size of increment
+	setting stroke or fill mode
+
+work out lerping b/w colors, how would UI work?
+
+lerping b/w colors in a pallette 
+	defined in external file??
+	random??
+
+WOULD RLY LIKE TO GENERATE RANDOMLY - new branch??
+
 try5
 
 implement control over expansion parameters (amount, phase, numWaves)
