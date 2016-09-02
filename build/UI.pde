@@ -27,6 +27,9 @@ void constructUI(){
 	ui.addSlider().label("dH / dR").sets("dcolArg1").max(50);
 	ui.addSlider().label("dS / dG").sets("dcolArg2").max(50);
 	ui.addSlider().label("dB / dB").sets("dcolArg3").max(50);
+	ui.addDivider();
+
+	addColorSliders("Background", "bg1", "bg2", "bg3");
 	
 	//ui.newColumn();	
 
@@ -43,13 +46,13 @@ void constructUI(){
 	// ui.addSlider().label("dB");
 }
 
-void addColorSliders(String title){
-	ui.addLabel("Color");
+void addColorSliders(String title, String p1, String p2, String p3){
+	ui.addLabel(title);
 	ui.newRow();
 	
-	ui.addSlider().label("H / R").sets("colArg1").max(255);
-	ui.addSlider().label("S / G").sets("colArg2").max(255);
-	ui.addSlider().label("B / B").sets("colArg3").max(255);
+	ui.addSlider().label("H / R").sets(p1).max(255);
+	ui.addSlider().label("S / G").sets(p2).max(255);
+	ui.addSlider().label("B / B").sets(p3).max(255);
 	ui.newRow();
 	ui.addDivider();
 }

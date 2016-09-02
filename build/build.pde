@@ -3,15 +3,16 @@ import com.martinleopold.pui.*;
 MultiForm mf;
 float initialRad;
 
-color currentFill, currentStroke;
+color currentFill, currentStroke, background;
 float currentStrokeWeight;
 boolean isFilled, isStroked;
 
 float colArg1, colArg2, colArg3, 
-	  dcolArg1, dcolArg2, dcolArg3;
+	  dcolArg1, dcolArg2, dcolArg3,
+	  bg1,bg2,bg3;
 
 void setup(){
-	size(650, 650);
+	size(650, 650, P2D);
 	background(255);
 	smooth(4);
 	strokeCap(ROUND);
@@ -25,6 +26,11 @@ void setup(){
 
 	mf.curr().arrangeCircle(initialRad);
 
+	bg1 = 0;
+	bg2 = 0;
+	bg3 = 0;
+	background = color(bg1,bg2,bg3);
+
 	colArg1 = 200;
 	colArg2 = 200;
 	colArg3 = 200;
@@ -37,12 +43,9 @@ void setup(){
 }
 
 void draw(){
-	background(255);
+	background = color(bg1,bg2,bg3);
+	background(background);
 
-	if(mouseX > width*0.9 && mouseY > height*0.9){
-		key = '\n';
-		println("key");
-	} 
 	pushMatrix();
 	translate(width/2, height/2);
 	mf.display();
@@ -73,9 +76,9 @@ void keyPressed() {
 			colArg1 += dcolArg1;
 			colArg2 += dcolArg2;
 			colArg3 += dcolArg3;
-			colArg1 %= 255;
-			colArg2 %= 255;
-			colArg3 %= 255;
+			colArg1 %= 256;
+			colArg2 %= 256;
+			colArg3 %= 256;
 			configColors();
 		break;
 
@@ -88,14 +91,14 @@ void keyPressed() {
 			colArg1 -= dcolArg1;
 			colArg2 -= dcolArg2;
 			colArg3 -= dcolArg3;
-			colArg1 %= 255;
-			colArg2 %= 255;
-			colArg3 %= 255;
+			colArg1 %= 256;
+			colArg2 %= 256;
+			colArg3 %= 256;
 			mf.fs.remove(mf.curr());
 		break;	
 
 		case 's':
-			saveFrame("../try5-####.png");
+			saveFrame("../captures/expand-####.png");
 		break;
 
 		case 'q':
