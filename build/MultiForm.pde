@@ -31,10 +31,7 @@ class MultiForm{
 	}
 
 	Form curr(){
-		if(fs.size() > 0) {
-			return fs.get(fs.size()-1);
-		}
-		return new Form(0);
+		return fs.get(fs.size()-1);
 	}
 
 	void reset(){

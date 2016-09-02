@@ -97,18 +97,18 @@ class Form{
 		 	break;
 
 		 	case "sin":
-		 		mag = 5*sin(TWO_PI / ps.size() * i * 12) + 10;
+		 		mag = 5*sin(TWO_PI / ps.size() * i * 10) + 10;
 		 	break;
 
 			case "sin+noise": {
 				float n = 10 * noise(((ps.size()-i-1)*0.03) + noise(i*0.03));
-				float s = 2.5 * (sin(TWO_PI / ps.size() * i * 12)+2);
+				float s = 2.5 * (sin(TWO_PI / ps.size() * i * 10)+2);
 				mag = n+s; }
 			break;
 
 			case "sin*noise":{
 				float n = noise(((ps.size()-i-1)*0.03) + noise(i*0.03));
-				float s = 10 * (sin(TWO_PI / ps.size() * i * 12)+3);
+				float s = 10 * (sin(TWO_PI / ps.size() * i * 10)+3);
 				mag = n*s;}
 			break;
 
@@ -167,14 +167,10 @@ class Form{
 		return this;
 	}
 
-	Form setStroke(color col){
-		stroke = col;
-		return this;
-	}
-
 	Form setStrokeWeight(float w){
 		strokeWeight = w;
 		return this;
+
 	}
 
 	Form setFill(float r, float g, float b){
@@ -187,29 +183,13 @@ class Form{
 		return this;
 	}
 
-	Form setFill(color col){
-		fill = col;
-		return this;
-	}
-
 	Form setNoFill(boolean b){
 		noFill = b;
 		return this;
 	}
 
-	Form toggleFill(){
-		noFill = !noFill;
-		return this;
-	}
-
 	Form setNoStroke(boolean b){
 		noStroke = b;
-		return this;
-	}
-
-	Form toggleStroke(){
-		noStroke = !noStroke;
-		println("stroke toggled");
 		return this;
 	}
 
