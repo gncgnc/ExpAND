@@ -10,9 +10,9 @@ class Form{
 	float strokeWeight;
 
 	int displayMode;
-	String expMode;
+	HashMap<String, Object> expMode;
 
-	String[] expModes;
+	HashMap<String, Object>[] expModes;
 
 	Form(float numParticles){
 		this.numParticles = numParticles;
@@ -29,13 +29,15 @@ class Form{
 		noFill = true;
 		noStroke = false;
 
-		expModes = loadStrings("expModes.txt");
-		expMode = "";
+		//expModes = loadStrings("expModes.txt");
+		expModes = readExpModes("expModes.txt");
+		expMode = expModes[0];
 	}
 
 	void display(){
 		switch (displayMode) {
 			case 0:
+				// *this might have better performance for animation purposes
 				// beginShape();
 				// for (int i=0; i<ps.size(); i++) {
 				// 	Particle p1 = ps.get(i);
@@ -74,33 +76,84 @@ class Form{
 		//later: add new Particles between far apart Particles??
 	}
 
-	PVector compExpVec(Particle p, int i, String mode){
+	PVector compExpVec(Particle p, int i, HashMap<String, Object> mode){
 		//Computes expansion vector of a Particle p at index i w.r.t. the expMode
 		PVector v = p.pos.copy();
 		v.normalize();
 		float mag = 1;
-		switch (mode) {
+
+		String name = (String) mode.get("name");
+		float amount = (float) mode.get("amount");
+		float range = (float) mode.get("range");
+
+		switch (name) {
 			case "":
-				mag = 10;
+				mag = amount;
 			break;
 
 		 	case "random":
-		 		mag = random(10,15);
+		 		mag = random(amount, amount + range);
 		 	break;
 
 		 	case "randomGaussian":
-		 		mag = map(randomGaussian(),-2,2,10,15);
+		 		mag = map(randomGaussian(), -2, 2, amount, amount + range);
 		 	break;
 
 		 	case "noise":
-		 		mag = noise((ps.size()-i-1)*0.03)*10 + noise(i*0.03)*10;
+		 		float detail;
+		 		if((float) mode.get("detail") == -1){
+		 			detail = 0.03;
+		 		} else {
+		 			detail = (float) mode.get("detail");
+		 		}
+		 		mag = map(noise((ps.size()-i-1)*detail) + noise(i*detail),
+		 		          0,
+		 		          2,
+		 		          amount - range/2,
+		 		          amount + range/2  
+		 		        );
 		 	break;
 
-		 	case "sin":
-		 		mag = 5*sin(TWO_PI / ps.size() * i * 10) + 10;
+		 	case "sin":{
+		 		float numPeaks;
+		 		float phase;
+
+		 		if((float) mode.get("numPeaks") == -1){
+		 			numPeaks = 10;
+		 		} else {
+		 			numPeaks = (float) mode.get("numPeaks");
+		 		}
+
+		 		if((float) mode.get("phase") == -1){
+		 			phase = 0;
+		 		} else {
+		 			phase = (float) mode.get("phase");
+		 		}
+
+		 		mag = map(sin(TWO_PI / ps.size() * i * numPeaks + phase), 
+		 			      0,
+		 			      1,
+		 			      amount - range/2,
+		 			      amount + range/2
+		 			); }
 		 	break;
 
 			case "sin+noise": {
+				float numPeaks;
+				float phase;
+
+				if((float) mode.get("numPeaks") == -1){
+		 			numPeaks = 10;
+		 		} else {
+		 			numPeaks = (float) mode.get("numPeaks");
+		 		}
+
+		 		if((float) mode.get("phase") == -1){
+		 			phase = 0;
+		 		} else {
+		 			phase = (float) mode.get("phase");
+		 		}
+
 				float n = 10 * noise(((ps.size()-i-1)*0.03) + noise(i*0.03));
 				float s = 2.5 * (sin(TWO_PI / ps.size() * i * 10)+2);
 				mag = n+s; }
@@ -201,6 +254,36 @@ class Form{
 		}
 		compPShape();
 	}
+
+	//@SupressWarnings("unchecked")
+	HashMap<String, Object>[] readExpModes(String file){
+
+		String[] lines = loadStrings(file);
+		//Array of HashMaps, each corresponding to an expansion mode
+		expModes = (HashMap<String, Object>[]) new HashMap[lines.length];
+
+
+		for (int i = 0; i < lines.length; i+=2) {
+			println(lines[i]);
+			println(lines[i+1]);
+			HashMap<String, Object> mode = new HashMap<String, Object>(); 
+			expModes[i] = mode;
+
+			String name = lines[i];
+			String[] parameters = lines[i+1].split("\t");
+
+			//default parameters, the first being the name
+			mode.put("name", name);
+			mode.put("amount", width/65);
+			mode.put("range", width/65 * 0.5);
+
+			for (int j = 0; j < parameters.length; j++) {
+				mode.put(parameters[j],(float) -1); //default value is -1
+			}
+
+		}
+		return expModes; 
+	} 
 
 	void setNumParticles(int num){
 		if(num > ps.size()){
