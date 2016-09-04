@@ -1,7 +1,14 @@
 
+	
 random
+	
 randomGaussian
+
 noise
+	detail
 sin
+	numPeaks phase 
 sin+noise
+	detail numPeaks phase 
 sin*noise
+	detail numPeaks phase
