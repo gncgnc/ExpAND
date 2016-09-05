@@ -1,6 +1,9 @@
 import com.martinleopold.pui.*;
+import processing.pdf.*;
 import java.util.*;
 
+boolean saveToPDF = false;
+PGraphics pdf;
 
 MultiForm mf;
 float initialRad;
@@ -14,7 +17,7 @@ float colArg1, colArg2, colArg3,
 	  bg1,bg2,bg3;
 
 void setup(){
-	size(650, 650, P2D);
+	size(650, 650, JAVA2D);
 	background(255);
 	smooth(4);
 	strokeCap(ROUND);
@@ -26,7 +29,7 @@ void setup(){
 
 	mf.curr().arrangeCircle(initialRad);
 
-	bg1 = 134;
+	bg1 = 40; //134 for cyan
 	bg2 = 161;
 	bg3 = 227;
 	background = color(bg1,bg2,bg3);
@@ -50,14 +53,31 @@ void setup(){
 
 void draw(){
 	background = color(bg1,bg2,bg3);
-	background(background);
+
+	if(saveToPDF == true) {
+		mf.displayMode(-1);
+    	pdf = createGraphics(width, height, PDF, "../captures/pdfs/expand-"+mf.noiseSeed+".pdf");
+    	pdf.beginDraw();
+    	pdf.background(background);
+    	pdf.endDraw();
+    } else {
+    	background(background);
+    }
 
 	pushMatrix();
 	translate(width/2, height/2);
 	mf.display();
 	popMatrix();
 
-	fill(0);
+	if(saveToPDF == true) {
+    	mf.displayMode(0); 
+    	pdf.beginDraw();
+    	pdf.dispose();
+    	pdf.endDraw();
+    	saveToPDF = false; 
+  	}
+
+  	fill(0);
 	text((String) mf.curr().expMode.get("name"), 
 		textAscent(), height-textAscent());
 }
@@ -116,8 +136,13 @@ void keyPressed() {
 		break;	
 
 		case 's':
-			saveFrame("../captures/expand-####.png");
+			saveFrame("../captures/expand-"+mf.noiseSeed+".png");
 		break;
+
+		case 'r' :
+			ui.hide();
+			saveToPDF = true;
+		break;	
 
 		case 'q':
 			exit();
