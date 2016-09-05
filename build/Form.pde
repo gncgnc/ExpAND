@@ -99,39 +99,26 @@ class Form{
 		 		mag = map(randomGaussian(), -2, 2, amount, amount + range);
 		 	break;
 
-		 	case "noise":
-		 		float detail;
-		 		if((float) mode.get("detail") == -1){
-		 			detail = 0.03;
-		 		} else {
-		 			detail = (float) mode.get("detail");
-		 		}
-		 		mag = map(noise((ps.size()-i-1)*detail) + noise(i*detail),
+		 	case "noise":{
+		 		float detail = (float) mode.get("detail");
+				detail = detail==-1 ? 0.03 : detail;
+				float yoff = (float) mode.get("yoff");
+				yoff = yoff==-1 ? 0 : yoff;
+		 		mag = map(noise((ps.size()-i-1)*detail, yoff) + noise(i*detail, yoff),
 		 		          0,
 		 		          2,
-		 		          amount - range/2,
-		 		          amount + range/2  
-		 		        );
+		 		          amount - range,
+		 		          amount + range  
+		 		        );}
 		 	break;
 
 		 	case "sin":{
-		 		float numPeaks;
-		 		float phase;
-
-		 		if((float) mode.get("numPeaks") == -1){
-		 			numPeaks = 10;
-		 		} else {
-		 			numPeaks = (float) mode.get("numPeaks");
-		 		}
-
-		 		if((float) mode.get("phase") == -1){
-		 			phase = 0;
-		 		} else {
-		 			phase = (float) mode.get("phase");
-		 		}
-
+		 		float numPeaks = (float) mode.get("numPeaks");
+				numPeaks = numPeaks==-1 ? 12 : numPeaks;
+				float phase = (float) mode.get("phase");
+				phase = phase==-1 ? 0 : phase;
 		 		mag = map(sin(TWO_PI / ps.size() * i * numPeaks + phase), 
-		 			      0,
+		 			      -1,
 		 			      1,
 		 			      amount - range/2,
 		 			      amount + range/2
@@ -139,31 +126,52 @@ class Form{
 		 	break;
 
 			case "sin+noise": {
-				float numPeaks;
-				float phase;
-
-				if((float) mode.get("numPeaks") == -1){
-		 			numPeaks = 10;
-		 		} else {
-		 			numPeaks = (float) mode.get("numPeaks");
-		 		}
-
-		 		if((float) mode.get("phase") == -1){
-		 			phase = 0;
-		 		} else {
-		 			phase = (float) mode.get("phase");
-		 		}
-
-				float n = 10 * noise(((ps.size()-i-1)*0.03) + noise(i*0.03));
-				float s = 2.5 * (sin(TWO_PI / ps.size() * i * 10)+2);
-				mag = n+s; }
+				float detail = (float) mode.get("detail");
+				detail = detail==-1 ? 0.03 : detail;
+				float numPeaks = (float) mode.get("numPeaks");
+				numPeaks = numPeaks==-1 ? 12 : numPeaks;
+				float phase = (float) mode.get("phase");
+				phase = phase==-1 ? 0 : phase;
+				float yoff = (float) mode.get("yoff");
+				yoff = yoff==-1 ? 0 : yoff;
+				//float n = 10 * noise(((ps.size()-i-1)*0.03) + noise(i*0.03));
+				float n = noise((ps.size()-i-1)*detail, yoff) + noise(i*detail, yoff);
+				n = map(n, 0, 2, amount, amount + range);
+		 		//float s = 2.5 * (sin(TWO_PI / ps.size() * i * 10)+2);
+				float s = map(sin(TWO_PI / ps.size() * i * numPeaks + phase),
+						  	  -1, 1, amount - range, amount + range);
+				mag = 0.7*n+0.3*s; }
 			break;
 
 			case "sin*noise":{
-				float n = noise(((ps.size()-i-1)*0.03) + noise(i*0.03));
-				float s = 10 * (sin(TWO_PI / ps.size() * i * 10)+3);
+				float detail = (float) mode.get("detail");
+				detail = detail==-1 ? 0.03 : detail;
+				float numPeaks = (float) mode.get("numPeaks");
+				numPeaks = numPeaks==-1 ? 12 : numPeaks;
+				float phase = (float) mode.get("phase");
+				phase = phase==-1 ? 0 : phase;
+				float yoff = (float) mode.get("yoff");
+				yoff = yoff==-1 ? 0 : yoff;
+				// float n = noise(((ps.size()-i-1)*0.03)) + noise(i*0.03);
+				// float s = 10 * (sin(TWO_PI / ps.size() * i * 10)+3);
+				float n = noise(((ps.size()-i-1)*detail), yoff) + noise(i*detail, yoff);
+				float s = map(sin(TWO_PI / ps.size() * i * numPeaks + phase), 
+							  -1, 1, amount, amount+range*2);
 				mag = n*s;}
 			break;
+
+			case "e^noise" : {
+				float detail = (float) mode.get("detail");
+				detail = detail==-1 ? 0.03 : detail;
+				float exponent = (float) mode.get("exponent");
+				exponent = exponent==-1 ? 3 : exponent;
+				float yoff = (float) mode.get("yoff");
+				yoff = yoff==-1 ? 200 : yoff;
+
+				float n = noise(((ps.size()-i-1)*detail), yoff) + noise(i*detail, yoff);
+				mag = map(exp(exponent*n), 0, exp(exponent), amount, amount+range);
+			}
+			break;	
 
 			default :
 				mag = 10;
@@ -220,6 +228,11 @@ class Form{
 		return this;
 	}
 
+	Form setStroke(color col){
+		stroke = col;
+		return this;
+	}
+
 	Form setStrokeWeight(float w){
 		strokeWeight = w;
 		return this;
@@ -236,13 +249,29 @@ class Form{
 		return this;
 	}
 
+	Form setFill(color col){
+		fill = col;
+		return this;
+	}
+
 	Form setNoFill(boolean b){
 		noFill = b;
 		return this;
 	}
 
+	Form toggleFill(){
+		noFill = !noFill;
+		return this;
+	}
+
 	Form setNoStroke(boolean b){
 		noStroke = b;
+		return this;
+	}
+
+	Form toggleStroke(){
+		noStroke = !noStroke;
+		println("stroke toggled");
 		return this;
 	}
 
@@ -255,33 +284,33 @@ class Form{
 		compPShape();
 	}
 
+
 	//@SupressWarnings("unchecked")
 	HashMap<String, Object>[] readExpModes(String file){
 
 		String[] lines = loadStrings(file);
 		//Array of HashMaps, each corresponding to an expansion mode
-		expModes = (HashMap<String, Object>[]) new HashMap[lines.length];
+		expModes = (HashMap<String, Object>[]) new HashMap[lines.length/2];
 
 
 		for (int i = 0; i < lines.length; i+=2) {
-			println(lines[i]);
-			println(lines[i+1]);
 			HashMap<String, Object> mode = new HashMap<String, Object>(); 
-			expModes[i] = mode;
+			expModes[i/2] = mode;
 
 			String name = lines[i];
-			String[] parameters = lines[i+1].split("\t");
+			String[] parameters = lines[i+1].split(" ");
 
 			//default parameters, the first being the name
-			mode.put("name", name);
-			mode.put("amount", width/65);
+			mode.put("name",(String) name);
+			mode.put("amount", float(width/65));
 			mode.put("range", width/65 * 0.5);
 
 			for (int j = 0; j < parameters.length; j++) {
-				mode.put(parameters[j],(float) -1); //default value is -1
+				if(parameters[j] != "") mode.put(parameters[j], float(-1)); //default value is -1
 			}
 
 		}
+
 		return expModes; 
 	} 
 

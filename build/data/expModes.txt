@@ -1,14 +1,16 @@
 
-	
+
 random
-	
+
 randomGaussian
 
 noise
-	detail
+detail yoff
 sin
-	numPeaks phase 
+numPeaks phase
 sin+noise
-	detail numPeaks phase 
+detail yoff numPeaks phase
 sin*noise
-	detail numPeaks phase
+detail yoff numPeaks phase
+e^noise
+detail yoff exponent

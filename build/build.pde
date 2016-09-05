@@ -13,13 +13,11 @@ float colArg1, colArg2, colArg3,
 	  bg1,bg2,bg3;
 
 void setup(){
-	size(650, 650, P2D);
+	size(650, 650);
 	background(255);
 	smooth(4);
 	strokeCap(ROUND);
 	colorMode(HSB);
-
-	constructUI();
 
 	mf = new MultiForm(500);
 	mf.displayMode(0);
@@ -27,10 +25,14 @@ void setup(){
 
 	mf.curr().arrangeCircle(initialRad);
 
-	bg1 = 0;
-	bg2 = 0;
-	bg3 = 0;
+	bg1 = 134;
+	bg2 = 161;
+	bg3 = 227;
 	background = color(bg1,bg2,bg3);
+
+	dcolArg1 = 10;
+	dcolArg2 = 0;
+	dcolArg3 = 30;
 
 	colArg1 = 200;
 	colArg2 = 200;
@@ -40,11 +42,13 @@ void setup(){
 	currentStrokeWeight = 1;
 	isStroked = false;
 	isFilled = true;
-	configColors();
+
+	updateFormColors();
+
+	constructUI();
 }
 
 void draw(){
-	background = color(bg1,bg2,bg3);
 	background(background);
 
 	pushMatrix();
@@ -53,10 +57,11 @@ void draw(){
 	popMatrix();
 
 	fill(0);
-	//text(mf.curr().expMode, textAscent(), height-textAscent());
+	text((String) mf.curr().expMode.get("name"), 
+		textAscent(), height-textAscent());
 }
 
-void configColors(){
+void updateFormColors(){
 	currentFill = color(colArg1, colArg2, colArg3);
 	currentStroke = color(colArg1, colArg2, colArg3);
 
@@ -80,12 +85,12 @@ void keyPressed() {
 			colArg1 %= 256;
 			colArg2 %= 256;
 			colArg3 %= 256;
-			configColors();
+			updateFormColors();
 		break;
 
 		case ' ':
 			mf.reset();
-			configColors();
+			updateFormColors();
 		break;
 
 		case '.' :
@@ -95,7 +100,16 @@ void keyPressed() {
 			colArg1 %= 256;
 			colArg2 %= 256;
 			colArg3 %= 256;
-			mf.fs.remove(mf.curr());
+			if(mf.fs.size() > 1) mf.fs.remove(mf.curr());
+		break;	
+
+		case 'x' : //for debugging
+			HashMap<String, Object>[] arr = mf.curr().expModes;
+			for (int i = 0; i < arr.length; i++) {
+				HashMap<String, Object> mp = arr[i];
+				println(mp);
+			}
+			println(mf.curr().expModes.length);
 		break;	
 
 		case 's':

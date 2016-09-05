@@ -1,3 +1,18 @@
+try7
+
+Implemented control over expansion parameters (Array of HashMap, read from file)
+	now need to access from UI. 
+		maybe the UI needs to be in a seperate PApplet??
+
+made expansion parameters scale with the sketch, preparation for high def
+	high def: output values to file, then generate? or no file needed maybe...
+
+added new expansion mode: e^noise. explore exponents with other things maybe
+
+assymmetry in sin+ and sin*noise was a simple bug, fixed. 
+	still considering circular noise; was a nice look.
+
+
 try6
 
 completed first implementation of UI (basic)
