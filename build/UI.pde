@@ -2,7 +2,7 @@ PUI ui;
 Slider[] formColorSliders, dformColorSliders, backgroundColorSliders;
 
 void constructUI(){
-	ui = PUI.init(this).size(width/3, height);
+	ui = PUI.init(this).size(width/4, height);
 	//with VSliders
 	//ui.columnWidth(2*width/3);
 

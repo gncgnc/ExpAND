@@ -19,7 +19,7 @@ float colArg1, colArg2, colArg3,
 void setup(){
 	size(650, 650, JAVA2D);
 	background(255);
-	smooth(4);
+	smooth(3);
 	strokeCap(ROUND);
 	colorMode(HSB);
 
