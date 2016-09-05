@@ -1,6 +1,7 @@
 import com.martinleopold.pui.*;
 import java.util.*;
 
+
 MultiForm mf;
 float initialRad;
 
@@ -49,6 +50,7 @@ void setup(){
 }
 
 void draw(){
+	background = color(bg1,bg2,bg3);
 	background(background);
 
 	pushMatrix();
@@ -150,3 +152,4 @@ ArrayList copyPVectorArrayList(ArrayList<PVector> arrl){
 
 	return dest;
 }
+

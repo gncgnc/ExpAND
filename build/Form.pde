@@ -236,7 +236,6 @@ class Form{
 	Form setStrokeWeight(float w){
 		strokeWeight = w;
 		return this;
-
 	}
 
 	Form setFill(float r, float g, float b){
