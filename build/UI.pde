@@ -17,21 +17,14 @@ void constructUI(){
 	ui.newRow();
 
 	formColorSliders = addColorSliders("Color","colArg1","colArg2","colArg3", 255);
-	formColorSliders[0].value(colArg1);
-	formColorSliders[1].value(colArg2);
-	formColorSliders[2].value(colArg3);
 	dformColorSliders = addColorSliders("Increments", "dcolArg1", "dcolArg2", "dcolArg3", 127);
-	dformColorSliders[0].value(dcolArg1);
-	dformColorSliders[1].value(dcolArg2);
-	dformColorSliders[2].value(dcolArg3);
 	backgroundColorSliders = addColorSliders("Background", "bg1", "bg2", "bg3", 255);
-	backgroundColorSliders[0].value(bg1);
-	backgroundColorSliders[1].value(bg2);
-	backgroundColorSliders[2].value(bg3);
+
+	updateColorSliders();
 
 	for (int i = 0; i < 3; i++) {
-		formColorSliders[i].calls("updateFormColorsSlider");
-		backgroundColorSliders[i].calls("updateBackgroundSlider");	
+		formColorSliders[i].calls("formColorsCallback");
+		backgroundColorSliders[i].calls("backgroundColorCallback");	
 	}
 }
 
@@ -50,10 +43,24 @@ Slider[] addColorSliders(String title, String p1, String p2, String p3, float ma
 	return sliders;
 }
 
-void updateFormColorsSlider(Slider s){
+void updateColorSliders(){
+	formColorSliders[0].value(colArg1);
+	formColorSliders[1].value(colArg2);
+	formColorSliders[2].value(colArg3);
+
+	dformColorSliders[0].value(dcolArg1);
+	dformColorSliders[1].value(dcolArg2);
+	dformColorSliders[2].value(dcolArg3);
+
+	backgroundColorSliders[0].value(bg1);
+	backgroundColorSliders[1].value(bg2);
+	backgroundColorSliders[2].value(bg3);
+}
+
+void formColorsCallback(Slider s){
 	updateFormColors();
 }
 
-void updateBackgroundSlider(Slider s){
+void backgroundColorCallback(Slider s){
 	background = color(bg1,bg2,bg3);
 }

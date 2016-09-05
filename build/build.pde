@@ -14,7 +14,7 @@ float colArg1, colArg2, colArg3,
 	  bg1,bg2,bg3;
 
 void setup(){
-	size(650, 650);
+	size(650, 650, P2D);
 	background(255);
 	smooth(4);
 	strokeCap(ROUND);
@@ -44,9 +44,8 @@ void setup(){
 	isStroked = false;
 	isFilled = true;
 
-	updateFormColors();
-
 	constructUI();
+	updateFormColors();
 }
 
 void draw(){
@@ -75,6 +74,8 @@ void updateFormColors(){
 		.setNoFill(!isFilled)
 		.updateStyle()
 	;
+
+	updateColorSliders();
 }
 
 void keyPressed() {
