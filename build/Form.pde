@@ -47,6 +47,15 @@ class Form{
 				shape(s);
 			break;
 
+			case -1 :
+				pdf.beginDraw();
+				pdf.pushMatrix();
+				pdf.translate(width/2, height/2);
+				pdf.shape(s);
+				pdf.popMatrix();
+				pdf.endDraw();
+			break;	
+
 			case 1: 
 				for (Particle p : ps) {
 					p.display();

@@ -2,6 +2,7 @@ class MultiForm{
 	ArrayList<Form> fs;
 	int numParticles;
 	int displayMode;
+	String noiseSeed;
 
 	MultiForm(int numParticles){
 		fs = new ArrayList<Form>(); 
@@ -41,7 +42,9 @@ class MultiForm{
 		fs.clear();
 		fs.add(new Form(numParticles));
 		displayMode(displayMode);
-		curr().arrangeCircle(initialRad);	
-		noiseSeed((long) random(1000));
+		curr().arrangeCircle(initialRad);
+		float ns = random(1000);	
+		noiseSeed((long) ns);
+		noiseSeed = "" + ns;
 	}
 }
